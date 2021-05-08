@@ -216,8 +216,5 @@ class IssueManagerTest {
             repo.flipIssueStatus(3);
             assertArrayEquals(expected.toArray(), repo.showAll().toArray());
         }
-
     }
-
-
 }

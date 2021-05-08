@@ -1,14 +1,15 @@
 package manager;
 
+import domain.Filter;
 import repository.IssueRepository;
 import domain.Issue;
 
 import java.util.*;
-import java.util.function.Predicate;
+
+import static domain.Filter.*;
 
 public class IssueManager {
     private IssueRepository repo = new IssueRepository();
-    Set<String> labels = new HashSet<>();
 
     public void add(Issue issue) {
         repo.add(issue);
@@ -27,36 +28,15 @@ public class IssueManager {
     }
 
     public Collection<Issue> filterByAuthor(String author) {
-        Collection<Issue> tmp = repo.showAll();
-        Collection<Issue> result = new ArrayList<>();
-        for (Issue issue : tmp) {
-            if (issue.matchesAuthor(author)) {
-                result.add(issue);
-            }
-        }
-        return result;
+        return Filter.filterBy(repo.showAll(), author(author));
     }
 
     public Collection<Issue> filterByAssignee(String assignee) {
-        Collection<Issue> tmp = repo.showAll();
-        Collection<Issue> result = new ArrayList<>();
-        for (Issue issue : tmp) {
-            if (issue.matchesAssignee(assignee)) {
-                result.add(issue);
-            }
-        }
-        return result;
+        return Filter.filterBy(repo.showAll(), assignee(assignee));
     }
 
     public Collection<Issue> filterByLabel(Set<String> labels) {
-        Collection<Issue> tmp = repo.showAll();
-        Collection<Issue> result = new ArrayList<>();
-        for (Issue issue : tmp) {
-            if (issue.matchesLabel(labels)) {
-                result.add(issue);
-            }
-        }
-        return result;
+        return Filter.filterBy(repo.showAll(), labels(labels));
     }
 
     public Collection<Issue> sortNewerFirst(Comparator<Issue> comparator) {
@@ -77,7 +57,6 @@ public class IssueManager {
             if (issue.getId() == id) {
                 issue.setOpen(!issue.isOpen());
             }
-
         }
     }
 

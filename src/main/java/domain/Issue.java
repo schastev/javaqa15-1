@@ -4,9 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Comparator;
 import java.util.Set;
-import java.util.function.Predicate;
 
 @Data
 @NoArgsConstructor
@@ -34,7 +32,6 @@ public class Issue implements Comparable<Issue> {
         }
         return false;
     }
-
 
     @Override
     public int compareTo(Issue o) {
