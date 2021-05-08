@@ -37,109 +37,80 @@ class IssueManagerTest {
 
     @Test
     void showAllTest() {
-        Collection<Issue> expected = new ArrayList<>();
-        expected.add(one);
-        expected.add(two);
-        expected.add(three);
-        expected.add(four);
-        expected.add(five);
+        Collection<Issue> expected = List.of(one, two, three, four, five);
         Collection<Issue> actual = repo.showAll();
         assertArrayEquals(expected.toArray(), actual.toArray());
     }
 
     @Test
     void showOpenIssuesTest() {
-        Collection<Issue> expected = new ArrayList<>();
-        expected.add(one);
-        expected.add(three);
-        expected.add(five);
+        Collection<Issue> expected = List.of(one, three, five);
         Collection<Issue> actual = repo.showOpenIssues();
         assertArrayEquals(expected.toArray(), actual.toArray());
     }
 
     @Test
     void showClosedIssues() {
-        Collection<Issue> expected = new ArrayList<>();
-        expected.add(two);
-        expected.add(four);
+        Collection<Issue> expected = List.of(two, four);
         Collection<Issue> actual = repo.showClosedIssues();
         assertArrayEquals(expected.toArray(), actual.toArray());
     }
 
     @Test
     void filterByAuthorTest() {
-        Collection<Issue> expected = new ArrayList<>();
-        expected.add(one);
-        expected.add(three);
-        expected.add(five);
+        Collection<Issue> expected = List.of(one, three, five);
         Collection<Issue> actual = repo.filterByAuthor("A");
         assertArrayEquals(expected.toArray(), actual.toArray());
     }
 
     @Test
     void filterByAssigneeTest() {
-        Collection<Issue> expected = new ArrayList<>();
-        expected.add(three);
-        expected.add(four);
-        expected.add(five);
+        Collection<Issue> expected = List.of(three, four, five);
         Collection<Issue> actual = repo.filterByAssignee("A");
         assertArrayEquals(expected.toArray(), actual.toArray());
     }
 
     @Test
     void filterByLabelTest() {
-        Collection<Issue> expected = new ArrayList<>();
-        expected.add(one);
-        expected.add(three);
-        expected.add(four);
+        Collection<Issue> expected = List.of(one, three, four);
         Collection<Issue> actual = repo.filterByLabel(new HashSet<>(Collections.singletonList("critical")));
         assertArrayEquals(expected.toArray(), actual.toArray());
     }
 
     @Test
     void sortNewerFirstTest() {
-        Collection<Issue> expected = new ArrayList<>();
-        expected.add(five);
-        expected.add(one);
-        expected.add(two);
-        expected.add(four);
-        expected.add(three);
+        Collection<Issue> expected = List.of(five, one, two, four, three);
         Collection<Issue> actual = repo.sortNewerFirst(new CompareByDate());
         assertArrayEquals(expected.toArray(), actual.toArray());
     }
 
     @Test
     void sortOlderFirstTest() {
-        Collection<Issue> expected = new ArrayList<>();
-        expected.add(three);
-        expected.add(four);
-        expected.add(two);
-        expected.add(one);
-        expected.add(five);
+        Collection<Issue> expected = List.of(three, four, two, one, five);
         Collection<Issue> actual = repo.sortOlderFirst(new CompareByDate());
         assertArrayEquals(expected.toArray(), actual.toArray());
     }
 
     @Test
     void flipIssueStatusToTrue() {
-        Collection<Issue> expected = new ArrayList<>();
-        expected.add(one);
-        expected.add(two);
-        expected.add(three);
-        expected.add(four);
-        expected.add(new Issue(4, false, "A", "A", 20210310, new HashSet<>(Arrays.asList("UI", "minor"))));
+        Collection<Issue> expected = List.of(
+                one,
+                two,
+                three,
+                four,
+                new Issue(4, false, "A", "A", 20210310, new HashSet<>(Arrays.asList("UI", "minor"))));
         repo.flipIssueStatus(4);
         assertArrayEquals(expected.toArray(), repo.showAll().toArray());
     }
 
     @Test
     void flipIssueStatusToFalse() {
-        Collection<Issue> expected = new ArrayList<>();
-        expected.add(one);
-        expected.add(two);
-        expected.add(three);
-        expected.add(new Issue(3, true, "C", "A", 20200510, new HashSet<>(Arrays.asList("UI", "critical"))));
-        expected.add(five);
+        Collection<Issue> expected = List.of(
+                one,
+                two,
+                three,
+                new Issue(3, true, "C", "A", 20200510, new HashSet<>(Arrays.asList("UI", "critical"))),
+                five);
         repo.flipIssueStatus(3);
         assertArrayEquals(expected.toArray(), repo.showAll().toArray());
     }
